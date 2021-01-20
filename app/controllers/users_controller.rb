@@ -65,27 +65,6 @@ before_action :set_one_month, only: :show
       params.require(:user).permit(:name, :email, :department, :password, :password_confirmation)
     end
 
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "ログインしてください。"
-        redirect_to login_url
-      end
-    end
-
-    def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_url)  unless current_user?(@user)
-    end
-
-    def admin_user
-      redirect_to root_url unless current_user.admin?
-    end
-
     def basic_info_params
       params.require(:user).permit(:department, :user_number, :card_id, :basic_time, :work_time)
     end
