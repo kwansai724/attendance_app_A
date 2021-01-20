@@ -1,5 +1,5 @@
 .user-table td {
-  vertical-align: middle;
+  vertical-align: bottom;
   text-align: center;
 }
 
@@ -32,4 +32,9 @@
 .btn-basic-info {
   margin: 15px 0;
   width: 30%;
+}
+
+#table-attendances td {
+  vertical-align: bottom;
+  text-align: center;
 }

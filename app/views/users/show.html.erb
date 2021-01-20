@@ -19,5 +19,63 @@
       </tr>
     </table> 
   </div>
+  <div>
+    <table class="table table-bordered table-condenced table-hover" id="table-attendances">
+      <thead>
+        <tr>
+          <td rowspan="0">残業申請</td>
+          <td rowspan="0">日付</td>
+          <td rowspan="0">曜日</td>
+        </tr>
+        <tr>
+          <td colspan="8">【実績】</td>
+          <td colspan="5">所定外勤務</td>
+        </tr>
+        <tr>
+          <td colspan="3">出社</td>
+          <td colspan="3">退社</td>
+          <td rowspan="2">在社時間</td>
+          <td rowspan="2">備考</td>
+          <td colspan="2">終了予定時間</td>
+          <td rowspan="2">時間外時間</td>
+          <td rowspan="3">業務処理内容</td>
+          <td rowspan="3">支持者確認㊞</td>
+        </tr>
+        <tr>
+          <td>時</td>
+          <td>分</td>
+          <td></td>
+          <td>時</td>
+          <td>分</td>
+          <td></td>
+          <td>時</td>
+          <td>分</td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% (@first_day..@last_day).each do |day| %>
+          <tr>
+            <td></td>
+            <td><%= l(day, format: :short) %></td>
+            <td><%= $days_of_the_week[day.wday] %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>  
+        <% end %>  
+      </tbody>
+    </table>
+  </div>
 
 </div>
