@@ -3,9 +3,6 @@ class Attendance < ApplicationRecord
 
   validates :worked_on, presence: true
   validates :note, length: { maximum: 50 }
-  validates :overtime_at, presence: true
-  validates :work_content, presence: true, length: { in: 5..30 }
-  validates :superior_confirmation, presence: true
 
   validate :finished_at_is_invalid_without_a_started_at
   validate :started_at_than_finished_at_fast_if_invalid

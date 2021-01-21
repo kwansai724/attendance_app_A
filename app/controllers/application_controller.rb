@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     Date.current.beginning_of_month : params[:date].to_date
     @last_day = @first_day.end_of_month
     one_month = [*@first_day..@last_day]
-
+  
     @attendances = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)
   
     unless one_month.count == @attendances.count
@@ -43,5 +43,14 @@ class ApplicationController < ActionController::Base
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "ページ情報の取得に失敗しました、再アクセスしてください。"
     redirect_to root_url
+  end
+
+  def next_day?
+    @attendance = Attendance.find(params[:id])
+    if @attendance.next_day? == "true"
+      @attendance.overtime_at.to_time.tomorrow
+    else
+      @attendance.overtime_at.to_time
+    end
   end
 end
