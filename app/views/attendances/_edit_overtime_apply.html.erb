@@ -1,4 +1,4 @@
-<%= form_with(model: @user, url: attendances_update_overtime_application_user_path(date: @first_day), local: true, method: :patch) do |f| %>
+<%= form_with(model: @user, url: attendances_update_overtime_apply_user_path(date: @first_day), local: true, method: :patch) do |f| %>
   <div class="modal-dialog modal-lg modal-dialog-center">
     <div class="modal-content">
       <div class="modal-header">
@@ -26,10 +26,13 @@
                     <tr>
                       <td><%= l(@attendance.worked_on, format: :short) %></td>
                       <td><%= $days_of_the_week[@attendance.worked_on.wday] %></td>
-                      <td></td>
-                      <td></td>
-                      <td><%= attendance.text_field :note, class: "form-control" %></td>
-                      <td></td>
+                      <td><%= attendance.time_field :overtime_at, class: "form-control" %></td>
+                      <td><%= attendance.check_box :next_day %></td>
+                      <td><%= attendance.text_field :work_content, class: "form-control" %></td>
+                      <td>
+                        <%= attendance.select :superior_confirmation, {'上長A':1, '上長B':2}, { include_blank: ''},
+                                              { class: 'form-control' , required: true } %>
+                      </td>
                     </tr>
                   <% end %>
               </tbody>

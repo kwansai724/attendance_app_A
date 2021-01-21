@@ -1,6 +1,6 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: :edit_one_month
-  before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_application]
+  before_action :set_user, only: [:edit_one_month, :update_one_month]
+  before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_apply]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month, only: :edit_one_month
 
@@ -42,12 +42,12 @@ class AttendancesController < ApplicationController
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
 
-  def edit_overtime_application
+  def edit_overtime_apply
     @attendance = Attendance.find(params[:id])
     @user = User.find(@attendance.user_id)
   end
 
-  def update_overtime_application
+  def update_overtime_apply
   end
 
   private
