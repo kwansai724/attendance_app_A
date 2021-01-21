@@ -1,5 +1,5 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: [:edit_one_month, :update_one_month]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_overtime_apply, :update_overtime_apply]
   before_action :logged_in_user, only: [:update, :edit_one_month, :edit_overtime_apply]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month, only: :edit_one_month
@@ -44,7 +44,6 @@ class AttendancesController < ApplicationController
 
   def edit_overtime_apply
     @attendance = Attendance.find(params[:id])
-    @user = User.find(@attendance.user_id)
   end
 
   def update_overtime_apply
@@ -62,5 +61,9 @@ class AttendancesController < ApplicationController
         flash[:danger] = "編集権限がありません。"
         redirect_to(root_url)
       end
+    end
+
+    def overtime_apply_params
+      params.require(:user).permit(attendances: [:overtime_at, :next_day, :work_content, :superior_confirmation])[:attendances]
     end
 end
