@@ -47,6 +47,13 @@ class AttendancesController < ApplicationController
   end
 
   def update_overtime_apply
+    @attendance = Attendance.find(params[:id])
+    if @attendance.update_attributes(overtime_apply_params)
+      flash[:success] = "残業申請しました。"
+    else
+      flash[:danger] = "無効な入力データがあります。"
+    end
+    redirect_to user_url(@user)
   end
 
   private
@@ -64,6 +71,6 @@ class AttendancesController < ApplicationController
     end
 
     def overtime_apply_params
-      params.require(:user).permit(attendances: [:overtime_at, :next_day, :work_content, :superior_confirmation])[:attendances]
+      params.require(:user).permit(attendance: [:overtime_at, :next_day, :work_content, :superior_confirmation])[:attendance]
     end
 end
