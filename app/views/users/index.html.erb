@@ -3,8 +3,13 @@
 <% provide(:button_text, '編集') %>
 <h1>ユーザー一覧</h1>
 
+<%= form_with url: import_users_path do |f| %>
+  <%= f.file_field :file %>
+  <%= f.submit "CSVをインポート", class: "btn btn-primary" %>
+<% end %>
+
+
 <div class="col-md-10 col-md-offset-1">
-  <%= will_paginate %>
   <table class="table table-condenced table-hover" id="table-users">
     <thead>
       <tr>
@@ -28,5 +33,4 @@
       </tr>
     <% end %>  
   </table>
-  <%= will_paginate %>
 </div>
