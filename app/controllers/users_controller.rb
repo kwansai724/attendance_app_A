@@ -2,8 +2,9 @@ class UsersController < ApplicationController
 before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :correct_user, only: [:edit, :update]
-before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info]
-before_action :set_one_month, only: :show
+before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :working_index]
+before_action :set_one_month, only: [:show]
+#before_action :working_user, only: :working_index
 #before_action :next_day?, only: :show
 
   def index
@@ -64,6 +65,10 @@ before_action :set_one_month, only: :show
       flash[:danger] = "#{@user.name}の更新は失敗しました。<br>" + @user.errors.full_messages.join("<br>")
     end
     redirect_to users_url
+  end
+
+  def working_index
+    @working_users = User.working_users
   end
 
   private

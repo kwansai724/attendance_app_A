@@ -8,6 +8,8 @@ ja:
           name: 名前
           email: メールアドレス
           department: 所属
+          user_number: 社員番号
+          card_id: カードID
           basic_time: 基本時間
           work_time: 勤務時間
           designated_work_start_time: 指定勤務開始時間

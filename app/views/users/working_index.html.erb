@@ -1,0 +1,22 @@
+<% provide(:title, 'Working') %>
+<h1>出勤中社員一覧</h1>
+
+<div class="col-md-10 col-md-offset-1">
+  <table class="table table-condensed table-hover" id="table-working">
+    <thead>
+      <tr>
+        <td><%= User.human_attribute_name :user_number %></td>
+        <td><%= User.human_attribute_name :name %></td>
+      </tr>
+    </thead>
+
+    <% @working_users.each do |user| %>
+      <% if current_user.admin? && !current_user?(user) %>
+        <tr>
+          <td><%= user.user_number %></td>
+          <td><%= user.name %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>

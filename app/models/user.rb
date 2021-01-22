@@ -60,4 +60,9 @@ class User < ApplicationRecord
   def self.updatable_attributes
     ["name", "email", "department", "user_number", "card_id", "password", "basic_time", "designated_work_start_time", "designated_work_end_time"]
   end
+
+  def self.working_users
+    working_users = Attendance.where(worked_on: Date.today, finished_at: nil).where.not(started_at: nil).pluck(:user_id).uniq
+    where(id: working_users)
+  end
 end
