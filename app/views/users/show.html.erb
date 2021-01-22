@@ -114,7 +114,14 @@
           <td colspan="6"></td>
           <td><%= format("%.2f", @total_working_times.to_f) %></td>
           <td colspan="5"></td>
-          <td><%= link_to "申請", "#", class: "btn btn-primary" %></td>
+          <td>
+            <h6>所属長承認 未</h6><br>
+            <%= form_with model: @user do |f| %>
+              <%= f.select :superior_confirmation, {'上長A':1, '上長B':2}, { include_blank: ''},
+                                              { class: 'form-control' , required: true }%>
+            <% end %><br>                               
+            <%= link_to "申請", "#", class: "btn btn-block btn-primary" %>
+          </td>
         </tr>
       <tfoot>
 
