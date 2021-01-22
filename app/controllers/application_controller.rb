@@ -46,11 +46,11 @@ class ApplicationController < ActionController::Base
   end
 
   def next_day?
-    @attendance = Attendance.find(params[:id])
-    if @attendance.next_day? == "true"
+    if @attendance.next_day == "true"
       @attendance.overtime_at.to_time.tomorrow
     else
       @attendance.overtime_at.to_time
     end
   end
+
 end

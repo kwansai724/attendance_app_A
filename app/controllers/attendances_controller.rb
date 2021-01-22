@@ -3,7 +3,7 @@ class AttendancesController < ApplicationController
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month, only: :edit_one_month
-  before_action :next_day?, only: :update_overtime_apply
+  #before_action :next_day?, only: :update_overtime_apply
 
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
@@ -49,6 +49,7 @@ class AttendancesController < ApplicationController
   end
 
   def update_overtime_apply
+    @attendance = Attendance.find(params[:id])
     @user = User.find(@attendance.user_id)
     if @attendance.update_attributes(overtime_apply_params)
       flash[:success] = "残業申請しました。"
