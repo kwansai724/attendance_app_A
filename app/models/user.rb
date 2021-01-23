@@ -62,7 +62,7 @@ class User < ApplicationRecord
   end
 
   def self.working_users
-    working_users = Attendance.where(worked_on: Date.today, finished_at: nil).where.not(started_at: nil).pluck(:user_id).uniq
+    working_users = Attendance.where(worked_on: Date.today, finished_at: nil).where.not(started_at: nil).pluck(:user_id)
     where(id: working_users)
   end
 end
