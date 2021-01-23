@@ -5,6 +5,20 @@ class BasesController < ApplicationController
     @bases = Base.all
   end
 
+  def new
+    @base = Base.new
+  end
+
+  def create
+    @base = Base.new(base_params)
+    if @base.save
+      flash[:success] = "拠点情報を追加しました。"
+    else
+      flash[:danger] = "入力データが無効です。<br>"+ @base.errors.full_messages.join("<br>")
+    end
+    redirect_to bases_url
+  end
+
   def edit
   end
 
