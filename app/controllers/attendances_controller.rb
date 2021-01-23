@@ -59,6 +59,11 @@ class AttendancesController < ApplicationController
     redirect_to user_url(@user)
   end
 
+  def edit_overtime_approval
+    @attendance = Attendance.find(params[:id])
+    @user = User.find(@attendance.user_id)
+  end
+
   
   private
 
