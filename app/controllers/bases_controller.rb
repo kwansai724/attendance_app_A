@@ -1,11 +1,20 @@
 class BasesController < ApplicationController
-  before_action :set_base, only: [:edit, :destroy]
+  before_action :set_base, only: [:edit, :update, :destroy]
 
   def index
     @bases = Base.all
   end
 
   def edit
+  end
+
+  def update
+    if @base.update_attributes(base_params)
+      flash[:success] = "拠点情報を修正しました。"
+    else
+      flash[:danger] = "入力データが無効です。<br>"+ @base.errors.full_messages.join("<br>")
+    end
+    redirect_to bases_url
   end
   
   def destroy
@@ -19,5 +28,9 @@ class BasesController < ApplicationController
   
     def set_base
       @base = Base.find(params[:id])
+    end
+
+    def base_params
+      params.require(:base).permit(:base_number, :base_name, :attendance_type)
     end
 end
