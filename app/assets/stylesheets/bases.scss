@@ -15,3 +15,11 @@
   margin: 15px 0;
   width: 30%;
 }
+
+.base-table td {
+  vertical-align: bottom;
+  text-align: center;
+  tr:nth-child(odd) {
+    background: rgb(201, 201, 201);
+  }
+}

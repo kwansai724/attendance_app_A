@@ -2,7 +2,7 @@
 <h1>拠点一覧</h1>
 
 <div class="container">
-  <table class="table table-bordered table-condenced user-table">
+  <table class="table table-bordered table-condenced base-table">
     <tr>
       <td></td>
       <td></td>
@@ -15,7 +15,7 @@
         <td>
           <%= link_to "修正", edit_basis_path(base), remote: true, class: "btn btn-primary" %>
         </td>   
-        <td><%= link_to "削除", bases_path, method: :delete,
+        <td><%= link_to "削除", base, method: :delete,
                   data: { confirm: "#{base.base_name}を削除してよろしいですか？" }, class: "btn btn-primary" %></td>
         <td><%= base.base_number %></td>
         <td><%= base.base_name %></td>
