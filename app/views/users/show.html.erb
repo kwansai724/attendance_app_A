@@ -70,7 +70,7 @@
         <% @attendances.each do |day| %>
           <tr>
             <td>
-              <%= link_to "残業申請", attendances_edit_overtime_apply_user_path(day), 
+              <%= link_to "残業申請", attendances_new_overtime_apply_user_path(day), 
                   remote: true, class: "btn btn-primary" %>
             </td>
             <td><%= l(day.worked_on, format: :short) %></td>
@@ -100,10 +100,10 @@
               <% end %>  
             </td>
             <td><%= day.note %></td>
-            <td><%= day.overtime_at %></td>
-            <td><%= day.overtime_at %></td>
             <td></td>
-            <td><%= day.work_content %></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td></td>
           </tr>  
         <% end %>  
@@ -130,5 +130,5 @@
   </div>
 </div>
 
-<div id="edit-overtime-apply" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="new-overtime-apply" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 <div id="edit-overtime-approval" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
