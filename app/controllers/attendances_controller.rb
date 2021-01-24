@@ -43,28 +43,20 @@ class AttendancesController < ApplicationController
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
 
-  def new_overtime_apply
+  def edit_overtime_apply
     @attendance = Attendance.find(params[:id])
     @user = User.find(@attendance.user_id)
   end
 
-  def create_overtime_apply
+  def update_overtime_apply
     @attendance = Attendance.find(params[:id])
     @user = User.find(@attendance.user_id)
-    if @attendance.save(overtime_apply_params)
+    if @attendance.update_attributes(overtime_apply_params)
       flash[:success] = "残業申請しました。"
     else
       flash[:danger] = "無効な入力データがあります。"
     end
     redirect_to user_url(@user)
-  end
-
-  def edit_overtime_approval
-    @attendance = Attendance.find(params[:id])
-    @user = User.find(@attendance.user_id)
-  end
-
-  def update_overtime_approval
   end
 
   

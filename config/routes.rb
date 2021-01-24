@@ -15,10 +15,10 @@ Rails.application.routes.draw do
       get 'working_index'
       get 'attendances/edit_one_month'
       patch 'attendances/update_one_month'
-      get 'attendances/new_overtime_apply'
-      patch 'attendances/create_overtime_apply'
-      get 'attendances/edit_overtime_approval'
-      patch 'attendances/update_overtime_approval'
+      get 'attendances/edit_overtime_apply'
+      patch 'attendances/update_overtime_apply'
+      get 'edit_overtime_approval'
+      patch 'update_overtime_approval'
     end
     resources :attendances, only: :update
     collection { post :import }
