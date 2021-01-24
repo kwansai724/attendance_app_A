@@ -71,8 +71,8 @@ before_action :set_one_month, only: [:show]
   end
 
   def edit_overtime_approval
-    @attendance = Attendance.find(params[:id])
-    @user = User.find(@attendance.user_id)
+    @overtime_users = User.overtime_users
+    @overtime_info = User.overtime_info
   end
 
   def update_overtime_approval
