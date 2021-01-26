@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 20210124082209) do
     t.boolean "next_day"
     t.string "work_content"
     t.string "superior_confirmation"
+    t.string "application"
+    t.boolean "change"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
@@ -44,15 +46,13 @@ ActiveRecord::Schema.define(version: 20210124082209) do
     t.string "department"
     t.string "remember_digest"
     t.boolean "admin", default: false
-    t.datetime "basic_time", default: "2021-01-23 23:00:00"
-    t.datetime "work_time", default: "2021-01-23 22:30:00"
-    t.datetime "designated_work_start_time", default: "2021-01-24 00:00:00"
-    t.datetime "designated_work_end_time", default: "2021-01-24 09:00:00"
+    t.datetime "basic_time", default: "2021-01-25 23:00:00"
+    t.datetime "work_time", default: "2021-01-25 22:30:00"
+    t.datetime "designated_work_start_time", default: "2021-01-26 00:00:00"
+    t.datetime "designated_work_end_time", default: "2021-01-26 09:00:00"
     t.integer "user_number"
     t.integer "card_id"
     t.boolean "superior", default: false
-    t.string "application"
-    t.boolean "change"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

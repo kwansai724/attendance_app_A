@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :edit_overtime_approval]
+before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :correct_user, only: [:edit, :update]
 before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :working_index]
@@ -70,14 +70,7 @@ before_action :set_one_month, only: [:show]
     @working_users = User.working_users
   end
 
-  def edit_overtime_approval
-    @overtime_users = User.overtime_users
-    @overtime_info = User.overtime_info
-  end
-
-  def update_overtime_approval
-  end
-
+  
   private
 
     def user_params

@@ -1,6 +1,6 @@
-class AddApprovalInfoToUsers < ActiveRecord::Migration[5.1]
+class AddOvertimeApplyToAttendances < ActiveRecord::Migration[5.1]
   def change
-    add_column :users, :application, :string
-    add_column :users, :change, :boolean
+    add_column :attendances, :application, :string
+    add_column :attendances, :change, :boolean
   end
 end

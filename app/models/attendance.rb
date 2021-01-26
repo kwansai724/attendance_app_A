@@ -18,6 +18,11 @@ class Attendance < ApplicationRecord
     end
   end
 
+  def self.overtime_info
+    overtime_info = Attendance.where.not(overtime_at: nil, work_content: nil, superior_confirmation: nil).pluck(:user_id)
+    where(id: overtime_info)
+  end
+
   #def overtime_at_than_designated_work_end_time_fast_if_invalid
     #if overtime_at.present? && designated_work_end_time.present?
       #errors.add(:designated_work_end_time, "より早い終了予定時間は無効です") if overtime_at < designated_work_end_time

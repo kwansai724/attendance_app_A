@@ -66,12 +66,5 @@ class User < ApplicationRecord
     where(id: working_users)
   end
 
-  def self.overtime_users
-    overtime_users = Attendance.where.not(overtime_at: nil, work_content: nil, superior_confirmation: nil).pluck(:user_id)
-    where(id: overtime_users)
-  end
-
-  def self.overtime_info
-    overtime_info = Attendance.where.not(overtime_at: nil, work_content: nil, superior_confirmation: nil)
-  end
+  
 end
