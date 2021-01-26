@@ -25,19 +25,21 @@
                 </tr>
               </thead>
               <% attendances.each do |day| %>
-                <tbody>
-                  <tr>
-                    <td><%= l(day.worked_on, format: :short) %></td>
-                    <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-                    <td><%= l(day.overtime_at, format: :time) %></td>
-                    <td><%= l(user.designated_work_end_time, format: :time) %></td>
-                    <td><%= over_times(user.designated_work_end_time, day.overtime_at) %></td>
-                    <td><%= day.work_content %></td>
-                    <td><%= f.select :application, [['申請中'], ['承認'], ['否認'], ['なし']], {include_blank: false, selected: 1 } %></td>
-                    <td><%= f.check_box :change, {}, "true", "false" %></td>
-                    <td><%= link_to "確認", user_path(user), class: "btn btn-primary" %></td>
-                  </tr>
-                </tbody>
+                <%= f.fields_for "attendances[]", day do |approval| %>
+                  <tbody>
+                    <tr>
+                      <td><%= l(day.worked_on, format: :short) %></td>
+                      <td><%= $days_of_the_week[day.worked_on.wday] %></td>
+                      <td><%= l(day.overtime_at, format: :time) %></td>
+                      <td><%= l(user.designated_work_end_time, format: :time) %></td>
+                      <td><%= over_times(user.designated_work_end_time, day.overtime_at) %></td>
+                      <td><%= day.work_content %></td>
+                      <td><%= approval.select :overtime_status, [['申請中'], ['承認'], ['否認'], ['なし']], {include_blank: false, selected: 1 } %></td>
+                      <td><%= approval.check_box :change, {}, "true", "false" %></td>
+                      <td><%= link_to "確認", user_path(user), class: "btn btn-primary" %></td>
+                    </tr>
+                  </tbody>
+                <% end %>
               <% end %>
             </table>
           <% end %>

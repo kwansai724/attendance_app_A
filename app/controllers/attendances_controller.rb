@@ -1,5 +1,5 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: [:edit_one_month, :update_one_month]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_overtime_approval, :update_overtime_approval]
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month, only: :edit_one_month
@@ -60,7 +60,6 @@ class AttendancesController < ApplicationController
   end
 
   def edit_overtime_approval
-    @user = User.find(params[:id])
     @attendances = Attendance.where.not(overtime_at: nil, work_content: nil, superior_confirmation: nil).order(:user_id).group_by(&:user_id)
   end
 
