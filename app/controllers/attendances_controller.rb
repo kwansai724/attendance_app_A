@@ -61,7 +61,6 @@ class AttendancesController < ApplicationController
 
   def edit_overtime_approval
     @user = User.find(params[:id])
-    # @overtime_users = User.joins(:attendances).where.not(attendances: {overtime_at: nil, work_content: nil, superior_confirmation: nil})
     @attendances = Attendance.where.not(overtime_at: nil, work_content: nil, superior_confirmation: nil).order(:user_id).group_by(&:user_id)
   end
 

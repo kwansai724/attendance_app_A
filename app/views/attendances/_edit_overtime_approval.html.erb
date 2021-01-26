@@ -33,9 +33,9 @@
                     <td><%= l(user.designated_work_end_time, format: :time) %></td>
                     <td><%= over_times(user.designated_work_end_time, day.overtime_at) %></td>
                     <td><%= day.work_content %></td>
-                    <td><%= f.select :application, [['申請中'], ['承認'], ['否認']], {include_blank: false, selected: 1 } %></td>
+                    <td><%= f.select :application, [['申請中'], ['承認'], ['否認'], ['なし']], {include_blank: false, selected: 1 } %></td>
                     <td><%= f.check_box :change, {}, "true", "false" %></td>
-                    <td><%= link_to "確認", user_path(user, day), class: "btn btn-primary" %></td>
+                    <td><%= link_to "確認", user_path(user), class: "btn btn-primary" %></td>
                   </tr>
                 </tbody>
               <% end %>
