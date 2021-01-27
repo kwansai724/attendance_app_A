@@ -65,12 +65,16 @@ class AttendancesController < ApplicationController
 
 
   def update_overtime_approval
-    @attendance = Attendance.find(params[:id])
-    if @attendance.update_attributes(overtime_approval_params)
-      flash[:success] = "変更を送信しました。"
-    else
-      flash[:danger] = "無効な入力データがあります。"
+    ActiveRecord::Base.transaction do
+      overtime_approval_params.each do |id, item|
+        attendance = Attendance.find(id)
+        attendance.update_attributes!(item)
+      end
     end
+      flash[:success] = "変更を送信しました。"
+      redirect_to user_url(@user)
+  rescue ActiveRecord::RecordInvalid
+    flash[:danger] = "無効な入力データがあります。"
     redirect_to user_url(@user)
   end
 
@@ -94,6 +98,6 @@ class AttendancesController < ApplicationController
     end
 
     def overtime_approval_params
-      params.require(:user).permit(attendance: [:overtime_status, :change])[:attendance]
+      params.require(:user).permit(attendances: [:change, :overtime_status])[:attendances]
     end
 end

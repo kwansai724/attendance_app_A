@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20210126133343) do
     t.string "work_content"
     t.string "superior_confirmation"
     t.boolean "change"
-    t.string "overtime_stetus", default: '申請中'
+    t.string "overtime_status"
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
