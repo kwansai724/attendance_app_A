@@ -34,6 +34,7 @@ before_action :set_one_month, only: [:show]
 
   def show
     @worked_sum = @attendances.where.not(started_at: nil).count
+    @overtime_count = Attendance.where(overtime_status: "申請中", superior_confirmation: @user.name).count
   end
 
   def edit
