@@ -104,7 +104,15 @@
             <td><%= day.overtime_at %></td>
             <td></td>
             <td><%= day.work_content %></td>
-            <td><%= day.overtime_status %></td>
+            <td>
+              <% if day.overtime_status == '承認' %>
+                <%= '残業承認済' %>
+              <% elsif day.overtime_status == '否認' %>
+                <%= '残業否認' %>
+              <% else %>    
+                <%= day.overtime_status %>
+              <% end %>  
+            </td>
           </tr>  
         <% end %>  
       </tbody>

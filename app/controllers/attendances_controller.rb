@@ -60,7 +60,7 @@ class AttendancesController < ApplicationController
   end
 
   def edit_overtime_approval
-    @attendances = Attendance.where.not(overtime_at: nil, work_content: nil, superior_confirmation: nil).order(:user_id).group_by(&:user_id)
+    @attendances = Attendance.where(overtime_status: '申請中', superior_confirmation: @user.name).order(:user_id).group_by(&:user_id)
   end
 
 
@@ -68,11 +68,13 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do
       overtime_approval_params.each do |id, item|
         attendance = Attendance.find(id)
-        attendance.update_attributes!(item)
+        if overtime_approval_params[id][:change] == 'true'
+          attendance.update_attributes!(item)
+        end
       end
     end
-      flash[:success] = "変更を送信しました。"
-      redirect_to user_url(@user)
+    flash[:success] = "変更を送信しました。"
+    redirect_to user_url(@user)
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "無効な入力データがあります。"
     redirect_to user_url(@user)
@@ -94,7 +96,7 @@ class AttendancesController < ApplicationController
     end
 
     def overtime_apply_params
-      params.require(:user).permit(attendance: [:overtime_at, :next_day, :work_content, :superior_confirmation])[:attendance]
+      params.require(:user).permit(attendance: [:overtime_at, :next_day, :work_content, :superior_confirmation])[:attendance].merge(overtime_status: '申請中')
     end
 
     def overtime_approval_params
