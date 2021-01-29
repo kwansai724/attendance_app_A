@@ -70,6 +70,9 @@ class AttendancesController < ApplicationController
         attendance = Attendance.find(id)
         if overtime_approval_params[id][:change] == 'true'
           attendance.update_attributes!(item)
+          if overtime_approval_params[id][:overtime_status] == 'なし'
+            attendance.update(overtime_at: nil, next_day: nil, work_content: nil, superior_confirmation: nil, change: nil, overtime_status: nil)
+          end
         end
       end
     end
