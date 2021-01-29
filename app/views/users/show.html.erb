@@ -33,7 +33,7 @@
       <%= link_to "【 勤怠変更申請のお知らせ 】", "#", class: "apply" %><br>
       <% if @overtime_count >= 1 %>
         <%= link_to "【 残業申請のお知らせ 】", attendances_edit_overtime_approval_user_path, remote: true, class: "apply-notice" %>
-        <span class="apply-notice"><%= "#{@overtime_count}件の通知があります" %></span><br>
+        <span class="apply-notice-span"><%= "#{@overtime_count}件の通知があります" %></span><br>
       <% else %>
         <%= link_to "【 残業申請のお知らせ 】", attendances_edit_overtime_approval_user_path, remote: true, class: "apply" %><br>
       <% end %>  
@@ -117,7 +117,7 @@
             <td><%= day.note %></td>
             <td><%= day.overtime_at.strftime('%H') if day.overtime_at.present? %></td>
             <td><%= day.overtime_at.strftime('%M') if day.overtime_at.present? %></td>
-            <td><%= over_times(@user.designated_work_end_time, day.overtime_at) if day.overtime_at.present? %></td>
+            <td><%= off_hours(@user.designated_work_end_time, day.overtime_at, day.next_day) if day.overtime_at.present? %></td>
             <td><%= day.work_content %></td>
             <td><%= overtime_state(day) %>
             </td>

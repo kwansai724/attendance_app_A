@@ -11,6 +11,7 @@ module AttendancesHelper
   def working_times(start, finish)
     format("%.2f", (((finish - start) / 60) / 60.0))
   end
+ 
 
   def overtime_state(attendance)
     return '残業承認済' if attendance.overtime_status == '承認'
