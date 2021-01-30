@@ -30,8 +30,10 @@
                       <td><%= attendance.check_box :next_day, {}, "true", "false" %></td>
                       <td><%= attendance.text_field :work_content, class: "form-control" %></td>
                       <td>
-                        <%= attendance.select :superior_confirmation, {'上長A': '上長A', '上長B': '上長B'}, { include_blank: ''},
-                                              { class: 'form-control' , required: true } %>
+                        <% if text = superior_name(@user) %>
+                          <%= attendance.select :superior_confirmation, text, { include_blank: ''},
+                                                { class: 'form-control' , required: true } %>
+                        <% end %>                        
                       </td>
                     </tr>
                   <% end %>

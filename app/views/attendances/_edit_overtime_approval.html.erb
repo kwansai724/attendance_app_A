@@ -34,7 +34,7 @@
                       <td><%= l(user.designated_work_end_time, format: :time) %></td>
                       <td><%= off_hours(user.designated_work_end_time, day.overtime_at, day.next_day) %></td>
                       <td><%= day.work_content %></td>
-                      <td><%= approval.select :overtime_status, [['申請中'], ['承認'], ['否認'], ['なし']], {include_blank: false, selected: 1 } %></td>
+                      <td><%= approval.select :overtime_status, ['申請中', '承認', '否認', 'なし'], {include_blank: false, selected: 1 } %></td>
                       <td><%= approval.check_box :change, {}, "true", "false" %></td>
                       <td><%= link_to "確認", user_path(user), class: "btn btn-primary" %></td>
                     </tr>
