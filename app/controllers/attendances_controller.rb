@@ -32,7 +32,9 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
-        attendance.update_attributes!(item)
+        unless item[:superior_check].blank?
+          attendance.update_attributes!(item)
+        end
       end
     end
     flash[:success] = "1か月分の勤怠情報を更新しました。"
@@ -50,10 +52,15 @@ class AttendancesController < ApplicationController
   def update_overtime_apply
     @attendance = Attendance.find(params[:id])
     @user = User.find(@attendance.user_id)
-    if @attendance.update_attributes(overtime_apply_params)
-      flash[:success] = "残業申請しました。"
-    else
-      flash[:danger] = "入力データが無効です。<br>" + @attendance.errors.full_messages.join("<br>")
+    if overtime_apply_params[:overtime_at].present? && overtime_apply_params[:work_content].present?
+      @attendance.update_attributes(overtime_apply_params)
+        flash[:success] = "残業申請しました。"
+    elsif overtime_apply_params[:overtime_at].blank? && overtime_apply_params[:work_content].blank?
+      flash[:danger] = "終了予定時間及び業務処理内容が空欄です。"
+    elsif overtime_apply_params[:overtime_at].blank?
+      flash[:danger] = "終了予定時間が空欄です。"
+    elsif overtime_apply_params[:work_content].blank?
+      flash[:danger] = "業務処理内容が空欄です。"
     end
     redirect_to @user
   end

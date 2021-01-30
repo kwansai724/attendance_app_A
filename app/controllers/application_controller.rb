@@ -44,14 +44,4 @@ class ApplicationController < ActionController::Base
     flash[:danger] = "ページ情報の取得に失敗しました、再アクセスしてください。"
     redirect_to root_url
   end
-
-  def next_day?
-    if @attendance.next_day == "true"
-      @attendance.overtime_at.to_time.tomorrow
-    else
-      @attendance.overtime_at.to_time
-    end
-  end
-
-
 end
