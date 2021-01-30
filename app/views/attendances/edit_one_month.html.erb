@@ -30,8 +30,8 @@
                   <% end %>
                 </td>
                 <% if (Date.current < day.worked_on) %>
-                  <td><%= attendance.time_select :started_at, {include_blank: true}, readonly: true, class: "form-control bootstrap-time" %></td>
-                  <td><%= attendance.time_select :finished_at, {include_blank: true}, readonly: true, class: "form-control bootstrap-time" %></td>
+                  <td><%= attendance.time_select :started_at, {include_blank: true, disabled: true}, class: "form-control bootstrap-time" %></td>
+                  <td><%= attendance.time_select :finished_at, {include_blank: true, disabled: true}, class: "form-control bootstrap-time" %></td>
                 <% else %>
                   <td><%= attendance.time_select :started_at, {include_blank: true}, class: "form-control bootstrap-time" %></td>
                   <td><%= attendance.time_select :finished_at, {include_blank: true}, class: "form-control bootstrap-time" %></td>
