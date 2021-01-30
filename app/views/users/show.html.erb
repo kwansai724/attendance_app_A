@@ -119,7 +119,10 @@
             <td><%= day.overtime_at.strftime('%M') if day.overtime_at.present? %></td>
             <td><%= off_hours(@user.designated_work_end_time, day.overtime_at, day.next_day) if day.overtime_at.present? %></td>
             <td><%= day.work_content %></td>
-            <td><%= overtime_state(day) %>
+            <td>
+              <% unless day.overtime_status == nil %>
+                <%= "【#{day.superior_confirmation}】" + "#{overtime_state(day)}" %>
+              <% end %>  
             </td>
           </tr>  
         <% end %>  
@@ -134,7 +137,7 @@
             <h6>所属長承認 未</h6><br>
             <% if current_user == @user %>
               <%= form_with model: @user do |f| %>
-                <%= f.select :superior_confirmation, {'上長A':1, '上長B':2}, { include_blank: ''},
+                <%= f.select :superior_confirmation, ['上長A', '上長B'], { include_blank: ''},
                                                 { class: 'form-control' , required: true }%>
               <% end %><br>                               
               <%= link_to "申請", "#", class: "btn btn-block btn-primary" %>

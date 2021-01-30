@@ -54,9 +54,9 @@ class AttendancesController < ApplicationController
     if @attendance.update_attributes(overtime_apply_params)
       flash[:success] = "残業申請しました。"
     else
-      flash[:danger] = "無効な入力データがあります。"
+      flash[:danger] = "入力データが無効です。<br>" + @attendance.errors.full_messages.join("<br>")
     end
-    redirect_to user_url(@user)
+    redirect_to @user
   end
 
   def edit_overtime_approval
@@ -71,16 +71,16 @@ class AttendancesController < ApplicationController
         if overtime_approval_params[id][:change] == 'true'
           attendance.update_attributes!(item)
           if overtime_approval_params[id][:overtime_status] == 'なし'
-            attendance.update(overtime_at: nil, next_day: nil, work_content: nil, superior_confirmation: nil, change: nil, overtime_status: nil)
+            attendance.update_columns(overtime_at: nil, next_day: nil, work_content: nil, superior_confirmation: nil, change: nil, overtime_status: nil)
           end
         end
       end
     end
     flash[:success] = "変更を送信しました。"
-    redirect_to user_url(@user)
+    redirect_to @user
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "無効な入力データがあります。"
-    redirect_to user_url(@user)
+    redirect_to @user
   end
 
   
