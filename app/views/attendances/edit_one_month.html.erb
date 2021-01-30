@@ -30,20 +30,25 @@
                   <% end %>
                 </td>
                 <% if (Date.current < day.worked_on) %>
-                  <td><%= attendance.time_field :started_at, readonly: true, class: "form-control" %></td>
-                  <td><%= attendance.time_field :finished_at, readonly: true, class: "form-control" %></td>
+                  <td><%= attendance.time_select :started_at, {include_blank: true}, readonly: true, class: "form-control bootstrap-time" %></td>
+                  <td><%= attendance.time_select :finished_at, {include_blank: true}, readonly: true, class: "form-control bootstrap-time" %></td>
                 <% else %>
-                  <td><%= attendance.time_field :started_at, class: "form-control" %></td>
-                  <td><%= attendance.time_field :finished_at, class: "form-control" %></td>
+                  <td><%= attendance.time_select :started_at, {include_blank: true}, class: "form-control bootstrap-time" %></td>
+                  <td><%= attendance.time_select :finished_at, {include_blank: true}, class: "form-control bootstrap-time" %></td>
                 <% end %>  
-                <td></td>
+                <td><%= attendance.check_box :tomorrow, {}, "true", "false" %></td>
                 <td>
                   <% if day.started_at.present? && day.finished_at.present? %>
                     <%= working_times(day.started_at, day.finished_at) %>
                   <% end %>
                 </td>
                 <td><%= attendance.text_field :note, class: "form-control" %></td>
-                <td></td>
+                <td>
+                  <% if text = superior_name(@user) %>
+                    <%= attendance.select :superior_check, text, { include_blank: ''},
+                                          { class: 'form-control' } %>
+                  <% end %>                        
+                </td>
               </tr>
             <% end %>  
           <% end %>  
