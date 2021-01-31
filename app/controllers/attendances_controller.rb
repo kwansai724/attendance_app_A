@@ -36,11 +36,13 @@ class AttendancesController < ApplicationController
         unless item[:superior_check].blank?
           unless item["change_started_at(4i)"] == "" || item["change_finished_at(4i)"] == "" 
             attendance.update_attributes!(item.merge(change_status: '申請中'))
+            flash[:success] = "1か月分の勤怠情報を更新しました。"
+          else
+            flash[:danger] = "出社時間または退社時間が未入力です。"
           end
         end
       end
     end
-    flash[:success] = "1か月分の勤怠情報を更新しました。"
     redirect_to user_url(date: params[:date])
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
