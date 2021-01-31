@@ -103,8 +103,13 @@
                 <%= $days_of_the_week[day.worked_on.wday] %>
               <% end %>
             </td>
-            <td><%= day.started_at.strftime('%H') if day.started_at.present? %></td>
-            <td><%= day.started_at.strftime('%M') if day.started_at.present? %></td>
+            <% if day.change_status == '承認' %>
+              <td><%= day.change_started_at.strftime('%H') if day.change_started_at.present? %></td>
+              <td><%= day.change_started_at.strftime('%M') if day.change_started_at.present? %></td>
+            <% else %>
+              <td><%= day.started_at.strftime('%H') if day.started_at.present? %></td>
+              <td><%= day.started_at.strftime('%M') if day.started_at.present? %></td>
+            <% end %>  
             <td>
               <% if current_user == @user %>
                 <% if btn_text = attendance_state(day) %>
@@ -112,8 +117,13 @@
                 <% end %>
               <% end %>    
             </td>
-            <td><%= day.finished_at.strftime('%H') if day.finished_at.present? %></td>
-            <td><%= day.finished_at.strftime('%M') if day.finished_at.present? %></td>
+            <% if day.change_status == '承認' %>
+              <td><%= day.change_finished_at.strftime('%H') if day.change_finished_at.present? %></td>
+              <td><%= day.change_finished_at.strftime('%M') if day.change_finished_at.present? %></td>
+            <% else %>
+              <td><%= day.finished_at.strftime('%H') if day.finished_at.present? %></td>
+              <td><%= day.finished_at.strftime('%M') if day.finished_at.present? %></td>
+            <% end %>    
             <td></td>
             <td>
               <% if day.started_at.present? && day.finished_at.present? %>
@@ -128,7 +138,10 @@
             <td><%= day.work_content %></td>
             <td>
               <% unless day.overtime_status == nil %>
-                <%= "【#{day.superior_confirmation}】" + "#{overtime_state(day)}" %>
+                <%= "【#{day.superior_confirmation}】" + "#{overtime_state(day)}" %><br>
+              <% end %>
+              <% unless day.change_status == nil %>
+                <%= "【#{day.superior_check}】" + "#{change_state(day)}" %>
               <% end %>  
             </td>
           </tr>  

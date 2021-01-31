@@ -21,7 +21,6 @@ module AttendancesHelper
     end
   end
  
-
   def overtime_state(attendance)
     return '残業承認済' if attendance.overtime_status == '承認'
     return '残業否認' if attendance.overtime_status == '否認'
@@ -32,5 +31,11 @@ module AttendancesHelper
     return ['上長B'] if user.name == "上長A"
     return ['上長A'] if user.name == "上長B"
     return ['上長A', '上長B'] unless user.name == "上長A" && "上長B"
+  end
+
+  def change_state(attendance)
+    return '勤怠変更承認済' if attendance.change_status == '承認'
+    return '勤怠変更否認' if attendance.change_status == '否認'
+    return '勤怠変更申請中' if attendance.change_status == '申請中'
   end
 end
