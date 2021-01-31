@@ -34,7 +34,9 @@ class AttendancesController < ApplicationController
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
         unless item[:superior_check].blank?
-          attendance.update_attributes!(item.merge(change_status: '申請中'))
+          unless item["change_started_at(4i)"] == "" || item["change_finished_at(4i)"] == "" 
+            attendance.update_attributes!(item.merge(change_status: '申請中'))
+          end
         end
       end
     end

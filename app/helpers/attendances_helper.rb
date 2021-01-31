@@ -12,9 +12,9 @@ module AttendancesHelper
     #format("%.2f", (((finish - start) / 60) / 60.0))
   #end
 
-  def working_times(start, finish, tomorrow)
+  def working_times(start, finish, tomorrow, change_status)
     #end_time = @user.designated_work_end_time.change(year: overtime_at.year, month: overtime_at.month, day: overtime_at.day)
-    unless tomorrow == true
+    unless tomorrow == true && change_status == '承認'
       format("%.2f", (((finish - start) / 60) / 60.0))
     else
       format("%.2f", (((finish - start) / 60) / 60.0) + 24)
