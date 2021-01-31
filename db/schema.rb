@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210131022942) do
+ActiveRecord::Schema.define(version: 20210131115711) do
 
   create_table "attendances", force: :cascade do |t|
     t.date "worked_on"
@@ -59,6 +59,9 @@ ActiveRecord::Schema.define(version: 20210131022942) do
     t.integer "user_number"
     t.integer "card_id"
     t.boolean "superior", default: false
+    t.boolean "month_modify"
+    t.string "month_status"
+    t.string "month_superior"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

@@ -29,7 +29,13 @@
   </div>
   <% if current_user == @user %>
     <% if current_user.superior %>
-      <%= link_to "【 所属長承認申請のお知らせ 】", "#", class: "apply" %><br>
+      <!--１ヶ月分の勤怠申請のお知らせ-->
+      <% if @change_count >= 1 %>
+        <%= link_to "【 所属長承認申請のお知らせ 】", edit_month_approval_user_path, remote: true, class: "apply-notice" %>
+        <span class="apply-notice-span"><%= "#{@month_count}件の通知があります" %></span><br>
+      <% else %>  
+        <%= link_to "【 所属長承認申請のお知らせ 】", edit_month_approval_user_path, remote: true, class: "apply" %><br>
+      <% end %>  
       <!--勤怠変更申請のお知らせ-->
       <% if @change_count >= 1 %>
         <%= link_to "【 勤怠変更申請のお知らせ 】", attendances_edit_change_approval_user_path, remote: true, class: "apply-notice" %>
@@ -166,11 +172,11 @@
           <td>
             <h6>所属長承認 未</h6><br>
             <% if current_user == @user %>
-              <%= form_with model: @user do |f| %>
-                <%= f.select :superior_confirmation, ['上長A', '上長B'], { include_blank: ''},
-                                                { class: 'form-control' , required: true }%>
-              <% end %><br>                               
-              <%= link_to "申請", "#", class: "btn btn-block btn-primary" %>
+              <%= form_with(model: @user, url: update_month_apply_user_path(@user), local: true, method: :patch) do |f| %>
+                <%= f.select :month_superior, ['上長A', '上長B'], { include_blank: '', selected: 1 },
+                                                { class: 'form-control' , required: true } %><br>
+                <%= f.submit "申請", class: "btn btn-block btn-primary" %>
+              <% end %>
             <% end %>  
           </td>
         </tr>
