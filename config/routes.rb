@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       patch 'attendances/update_overtime_apply'
       get 'attendances/edit_overtime_approval'
       patch 'attendances/update_overtime_approval'
+      get 'attendances/edit_change_approval'
+      patch 'attendances/update_change_approval'
     end
     resources :attendances, only: :update
     collection { post :import }

@@ -1,5 +1,6 @@
 class AttendancesController < ApplicationController
-  before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_overtime_approval, :update_overtime_approval]
+  before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_overtime_approval, :update_overtime_approval,
+                                  :edit_change_approval, :update_change_approval]
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
   before_action :set_one_month, only: :edit_one_month
@@ -33,7 +34,7 @@ class AttendancesController < ApplicationController
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
         unless item[:superior_check].blank?
-          attendance.update_attributes!(item)
+          attendance.update_attributes!(item.merge(change_status: '申請中'))
         end
       end
     end
@@ -87,6 +88,13 @@ class AttendancesController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     flash[:danger] = "無効な入力データがあります。"
     redirect_to @user
+  end
+
+  def edit_change_approval
+    @attendances = Attendance.where(change_status: '申請中', superior_check: @user.name).order(:user_id).group_by(&:user_id)
+  end
+
+  def update_change_approval
   end
 
   
