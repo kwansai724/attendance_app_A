@@ -95,13 +95,33 @@ class AttendancesController < ApplicationController
   end
 
   def update_change_approval
+    ActiveRecord::Base.transaction do
+      change_approval_params.each do |id, item|
+        attendance = Attendance.find(id)
+        if change_approval_params[id][:modify] == 'true'
+          attendance.update_attributes!(item)
+          if change_approval_params[id][:change_status] == 'なし'
+            attendance.update_columns(change_started_at: nil, change_finished_at: nil, note: nil, tomorrow: nil, modify: nil, change_status: nil, superior_check: nil)
+          end
+        end
+      end
+    end
+    flash[:success] = "変更を送信しました。"
+    redirect_to @user
+  rescue ActiveRecord::RecordInvalid
+    flash[:danger] = "無効な入力データがあります。"
+    redirect_to @user
   end
 
   
   private
 
     def attendances_params
-      params.require(:user).permit(attendances: [:started_at, :finished_at, :note, :tomorrow, :superior_check])[:attendances]
+      params.require(:user).permit(attendances: [:change_started_at, :change_finished_at, :note, :tomorrow, :superior_check])[:attendances]
+    end
+
+    def change_approval_params
+      params.require(:user).permit(attendances: [:modify, :change_status])[:attendances]
     end
 
     def admin_or_correct_user

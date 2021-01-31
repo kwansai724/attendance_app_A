@@ -47,14 +47,14 @@
                     <tr>
                       <td><%= l(day.worked_on, format: :short) %></td>
                       <td><%= $days_of_the_week[day.worked_on.wday] %></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <td><%= day.started_at.strftime('%H') if day.started_at.present? %></td>
+                      <td><%= day.started_at.strftime('%M') if day.started_at.present? %></td>
+                      <td><%= day.finished_at.strftime('%H') if day.finished_at.present? %></td>
+                      <td><%= day.finished_at.strftime('%M') if day.finished_at.present? %></td>
+                      <td><%= day.change_started_at.strftime('%H') if day.change_started_at.present? %></td>
+                      <td><%= day.change_started_at.strftime('%M') if day.change_started_at.present? %></td>
+                      <td><%= day.change_finished_at.strftime('%H') if day.change_finished_at.present? %></td>
+                      <td><%= day.change_finished_at.strftime('%M') if day.change_finished_at.present? %></td>
                       <td><%= day.note %></td>
                       <td><%= approval.select :change_status, ['申請中', '承認', '否認', 'なし'], {include_blank: false, selected: 1 } %></td>
                       <td><%= approval.check_box :modify, {}, "true", "false" %></td>
