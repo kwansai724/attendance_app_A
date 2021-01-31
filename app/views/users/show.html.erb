@@ -170,7 +170,11 @@
           <td><%= format("%.2f", @total_working_times.to_f) %></td>
           <td colspan="5"></td>
           <td>
-            <h6>所属長承認 未</h6><br>
+            <h6>所属長承認
+              <% unless @user.month_status == nil %>
+                <%= "#{@user.month_superior}" + "#{month_state(@user)}" %>
+              <% end %>  
+            </h6><br>
             <% if current_user == @user %>
               <%= form_with(model: @user, url: update_month_apply_user_path(@user), local: true, method: :patch) do |f| %>
                 <%= f.select :month_superior, ['上長A', '上長B'], { include_blank: '', selected: 1 },
