@@ -1,0 +1,39 @@
+<%= form_with(model: @user, url: update_month_approval_user_path(@user), local: true, method: :patch) do |f| %>
+  <div class="modal-dialog modal-lg modal-dialog-center">
+    <div class="modal-content">
+      <div class="modal-body">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <% @users.each do |user| %>
+              <h3 class="modal-title center">【 <%= user.name %> からの１ヶ月分の勤怠申請】</h3>
+              <table class="table table-bordered table-condensed table-hover" id="table-attendances">
+                <thead>
+                  <tr>
+                    <td>月</td>
+                    <td>指示者確認㊞</td>
+                    <td>変更</td>
+                    <td>勤怠を確認する</td>  
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><%= "#{@first_day.mon}月" %></td>
+                    <td><%= f.select :month_status, ['申請中', '承認', '否認', 'なし'], {include_blank: false, selected: 1 }, { class: 'form-control' } %></td>
+                    <td><%= f.check_box :month_modify, {}, "true", "false" %></td>
+                    <td><%= link_to "確認", user_path(user), class: "btn btn-primary" %></td>
+                  </tr>
+                </tbody>
+              </table>
+            <% end %>
+          </div>  
+        </div>
+        <div class="center">
+          <%= f.submit "変更を送信する", class: "btn btn-lg btn-primary" %>
+        </div>
+      </div>
+    </div>  
+  </div>
+<% end %>

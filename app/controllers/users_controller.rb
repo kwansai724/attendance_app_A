@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
-before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :update_month_apply]
+before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :update_month_apply,
+                                :edit_month_approval]
 before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :correct_user, only: [:edit, :update]
 before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :working_index]
-before_action :set_one_month, only: [:show]
+before_action :set_one_month, only: [:show, :edit_month_approval]
 
   def index
     @users = User.all
@@ -49,6 +50,7 @@ before_action :set_one_month, only: [:show]
   end
 
   def edit_month_approval
+    @users = User.where(month_status: '申請中', month_superior: @user.name).order(:id)
   end
 
   def update_month_approval
