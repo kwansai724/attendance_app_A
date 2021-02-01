@@ -1,10 +1,9 @@
 class UsersController < ApplicationController
-before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info, :update_month_apply,
-                                :edit_month_approval]
+before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :correct_user, only: [:edit, :update]
 before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :working_index]
-before_action :set_one_month, only: [:show, :edit_month_approval]
+before_action :set_one_month, only: [:show]
 
   def index
     @users = User.all
@@ -36,24 +35,7 @@ before_action :set_one_month, only: [:show, :edit_month_approval]
     @worked_sum = @attendances.where.not(started_at: nil).count
     @overtime_count = Attendance.where(overtime_status: "申請中", superior_confirmation: @user.name).count
     @change_count = Attendance.where(change_status: "申請中", superior_check: @user.name).count
-    @month_count = User.where(month_status: "申請中", month_superior: @user.name).count
-  end
-
-  def update_month_apply
-    unless month_params[:month_superior].blank?
-      @user.update_attributes(month_params.merge(month_status: '申請中'))
-      flash[:success] = "１ヶ月分の勤怠申請しました。"
-    else
-      flash[:danger] = "申請先を選択してください。"
-    end
-    redirect_to @user
-  end
-
-  def edit_month_approval
-    @users = User.where(month_status: '申請中', month_superior: @user.name).order(:id)
-  end
-
-  def update_month_approval
+    @month_count = Attendance.where(month_status: "申請中", month_superior: @user.name).count
   end
 
   def edit
@@ -99,9 +81,5 @@ before_action :set_one_month, only: [:show, :edit_month_approval]
 
     def basic_info_params
       params.require(:user).permit(:department, :user_number, :card_id, :basic_time, :work_time)
-    end
-
-    def month_params
-      params.require(:user).permit(:month_superior)
     end
 end
