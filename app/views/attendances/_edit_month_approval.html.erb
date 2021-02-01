@@ -7,8 +7,8 @@
       </button>
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
-            <% @attendances.each do |user_id, attendance| %>
-            <% user = User.find(user_id) %>
+            <% @attendances.each do |user_id, attendances| %>
+              <% user = User.find(user_id) %>
               <h3 class="modal-title center">【 <%= user.name %> からの１ヶ月分の勤怠申請】</h3>
               <table class="table table-bordered table-condensed table-hover" id="table-attendances">
                 <thead>
@@ -23,10 +23,10 @@
                   <%= f.fields_for "attendances[]", day do |approval| %>
                     <tbody>
                       <tr>
-                        <td></td>
+                        <td><%= "#{day.apply_month.mon}月" %></td>
                         <td><%= approval.select :month_status, ['申請中', '承認', '否認', 'なし'], {include_blank: false, selected: 1 }, { class: 'form-control' } %></td>
                         <td><%= approval.check_box :month_modify, {}, "true", "false" %></td>
-                        <td><%= link_to "確認", user_path(user), class: "btn btn-primary" %></td>
+                        <td><%= link_to "確認", user_path(day), class: "btn btn-primary" %></td>
                       </tr>
                     </tbody>
                   <% end %>

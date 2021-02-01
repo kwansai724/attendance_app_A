@@ -160,7 +160,8 @@
                 <%= "【#{day.superior_check}】" + "#{change_state(day)}" %>
               <% end %>  
             </td>
-          </tr>  
+          </tr>
+        <% end %>    
       </tbody>
         <tr>
           <td></td>
@@ -171,19 +172,15 @@
           <td>
             <h6>所属長承認</h6><br>
             <% if current_user == @user %>
-              <%= form_with(model: @user, url: attendances_update_month_apply_user_path(date: @first_day), local: true, method: :patch) do |f| %>
-                <%= f.fields_for "attendances[]", day do |attendance| %>
-                  <%= attendance.select :month_superior, ['上長A', '上長B'], { include_blank: '', selected: 1 },
-                                                  { class: 'form-control' , required: true } %><br>
-                <% end %>                                  
+              <%= form_with(model: @user, url: update_month_apply_user_path(date: @first_day), local: true, method: :patch) do |f| %>
+                <%= f.select :month_superior, ['上長A', '上長B'], { include_blank: '', selected: 1 },
+                                              { class: 'form-control' , required: true } %><br>
                 <%= f.submit "申請", class: "btn btn-block btn-primary" %>
               <% end %>
             <% end %>
           </td>
         </tr>
-        <% end %>
       <tfoot>
-
       </tfoot>
     </table>
   </div>

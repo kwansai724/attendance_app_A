@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       get 'edit_basic_info'
       patch 'update_basic_info'
       get 'working_index'
-      patch 'attendances/update_month_apply'
+      patch 'update_month_apply'
       get 'attendances/edit_month_approval'
       patch 'attendances/update_month_approval'
       get 'attendances/edit_one_month'

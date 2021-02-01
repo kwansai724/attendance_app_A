@@ -3,7 +3,7 @@ class AttendancesController < ApplicationController
                                   :edit_change_approval, :update_change_approval, :edit_month_approval]
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
-  before_action :set_one_month, only: [:edit_one_month, :edit_month_approval]
+  before_action :set_one_month, only: [:edit_one_month]
 
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
@@ -117,21 +117,11 @@ class AttendancesController < ApplicationController
     redirect_to @user
   end
 
-  def update_month_apply
-    debugger
-    @attendance = Attendance.find(params[:id])
-    @user = User.find(@attendance.user_id)
-    unless month_params[:month_superior].blank?
-      @attendance.update_attributes(month_params.merge(month_status: '申請中', apply_month: params[:date].to_date))
-      flash[:success] = "１ヶ月分の勤怠申請しました。"
-    else
-      flash[:danger] = "申請先を選択してください。"
-    end
-    redirect_to @user
-  end
+  
 
   def edit_month_approval
     @attendances = Attendance.where(month_status: '申請中', month_superior: @user.name).order(:user_id).group_by(&:user_id)
+    debugger
   end
 
   def update_month_approval
@@ -162,9 +152,5 @@ class AttendancesController < ApplicationController
 
     def overtime_approval_params
       params.require(:user).permit(attendances: [:change, :overtime_status])[:attendances]
-    end
-
-    def month_params
-      params.require(:user).permit(attendances: [:month_superior])[:attendances]
     end
 end
