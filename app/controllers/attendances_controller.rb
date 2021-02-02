@@ -118,9 +118,9 @@ class AttendancesController < ApplicationController
   end
 
   def update_month_apply
-    @attendance = Attendance.find_by(worked_on: params[:date])
+    @attendance = Attendance.where(user_id: month_params[:user_id], worked_on: params[:date])
     unless month_params[:month_superior].blank?
-      @attendance.update_attributes(month_params.merge(month_status: '申請中', apply_month: params[:date].to_date))
+      @attendance.update_all(month_params)
       flash[:success] = "１ヶ月分の勤怠申請しました。"
     else
       flash[:danger] = "申請先を選択してください。"
@@ -130,7 +130,7 @@ class AttendancesController < ApplicationController
   
 
   def edit_month_approval
-    @attendances = Attendance.where(month_status: '申請中', month_superior: @user.name).order(:user_id).group_by(&:user_id)
+    @attendances = Attendance.where(month_status: '申請中', month_superior: @user.name).order(:user_id, :apply_month).group_by(&:user_id)
   end
 
   def update_month_approval
@@ -180,7 +180,7 @@ class AttendancesController < ApplicationController
     end
 
     def month_params
-      params.require(:user).permit(:month_superior)
+      params.require(:user).permit(:month_superior).merge(user_id: params[:id], month_status: '申請中', apply_month: params[:date].to_date).to_h
     end
 
     def month_approval_params

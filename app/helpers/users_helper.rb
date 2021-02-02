@@ -11,5 +11,6 @@ module UsersHelper
     return 'から承認済' if user.month_status == '承認'
     return 'から否認' if user.month_status == '否認'
     return 'へ申請中' if user.month_status == '申請中'
+    return '未' unless user.month_status == '承認' || '否認' || '申請中'
   end
 end
