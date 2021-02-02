@@ -30,7 +30,7 @@
   <% if current_user == @user %>
     <% if current_user.superior %>
       <!--１ヶ月分の勤怠申請のお知らせ-->
-      <% if @change_count >= 1 %>
+      <% if @month_count >= 1 %>
         <%= link_to "【 所属長承認申請のお知らせ 】", attendances_edit_month_approval_user_path, remote: true, class: "apply-notice" %>
         <span class="apply-notice-span"><%= "#{@month_count}件の通知があります" %></span><br>
       <% else %>  
@@ -160,7 +160,7 @@
                 <%= "【#{day.superior_check}】" + "#{change_state(day)}" %>
               <% end %>  
             </td>
-          </tr>
+          </tr> 
         <% end %>    
       </tbody>
         <tr>
@@ -172,9 +172,9 @@
           <td>
             <h6>所属長承認</h6><br>
             <% if current_user == @user %>
-              <%= form_with(model: @user, url: update_month_apply_user_path(date: @first_day), local: true, method: :patch) do |f| %>
-                <%= f.select :month_superior, ['上長A', '上長B'], { include_blank: '', selected: 1 },
-                                              { class: 'form-control' , required: true } %><br>
+              <%= form_with(model: @user, url: attendances_update_month_apply_user_path(date: @first_day), local: true, method: :patch) do |f| %>
+                  <%= f.select :month_superior, ['上長A', '上長B'], { include_blank: '', selected: 1 },
+                                                { class: 'form-control' , required: true } %><br>
                 <%= f.submit "申請", class: "btn btn-block btn-primary" %>
               <% end %>
             <% end %>

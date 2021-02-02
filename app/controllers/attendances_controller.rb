@@ -1,9 +1,9 @@
 class AttendancesController < ApplicationController
   before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_overtime_approval, :update_overtime_approval,
-                                  :edit_change_approval, :update_change_approval, :edit_month_approval]
+                                  :edit_change_approval, :update_change_approval, :update_month_apply, :edit_month_approval, :update_month_approval]
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
-  before_action :set_one_month, only: [:edit_one_month]
+  before_action :set_one_month, only: [:edit_one_month, :update_month_apply]
 
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
@@ -36,7 +36,7 @@ class AttendancesController < ApplicationController
         unless item[:superior_check].blank?
           unless item["change_started_at(4i)"] == "" || item["change_finished_at(4i)"] == "" 
             attendance.update_attributes!(item.merge(change_status: '申請中'))
-            flash[:success] = "1か月分の勤怠情報を更新しました。"
+            flash[:success] = "1か月分の勤怠情報を申請しました。"
           else
             flash[:danger] = "出社時間または退社時間が未入力です。"
           end
@@ -117,14 +117,39 @@ class AttendancesController < ApplicationController
     redirect_to @user
   end
 
+  def update_month_apply
+    @attendance = Attendance.find_by(worked_on: params[:date])
+    unless month_params[:month_superior].blank?
+      @attendance.update_attributes(month_params.merge(month_status: '申請中', apply_month: params[:date].to_date))
+      flash[:success] = "１ヶ月分の勤怠申請しました。"
+    else
+      flash[:danger] = "申請先を選択してください。"
+    end
+    redirect_to @user
+  end
   
 
   def edit_month_approval
     @attendances = Attendance.where(month_status: '申請中', month_superior: @user.name).order(:user_id).group_by(&:user_id)
-    debugger
   end
 
   def update_month_approval
+    ActiveRecord::Base.transaction do
+      month_approval_params.each do |id, item|
+        attendance = Attendance.find(id)
+        if month_approval_params[id][:month_modify] == 'true'
+          attendance.update_attributes!(item)
+          if month_approval_params[id][:month_status] == 'なし'
+            attendance.update_columns(month_modify: nil, month_status: nil, month_superior: nil, apply_month: nil)
+          end
+        end
+      end
+    end
+    flash[:success] = "変更を送信しました。"
+    redirect_to @user
+  rescue ActiveRecord::RecordInvalid
+    flash[:danger] = "無効な入力データがあります。"
+    redirect_to @user
   end
 
   
@@ -153,4 +178,12 @@ class AttendancesController < ApplicationController
     def overtime_approval_params
       params.require(:user).permit(attendances: [:change, :overtime_status])[:attendances]
     end
-end
+
+    def month_params
+      params.require(:user).permit(:month_superior)
+    end
+
+    def month_approval_params
+      params.require(:user).permit(attendances: [:month_modify, :month_status])[:attendances]
+    end
+  end
