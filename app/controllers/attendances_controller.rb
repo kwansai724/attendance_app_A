@@ -125,7 +125,7 @@ class AttendancesController < ApplicationController
     else
       flash[:danger] = "申請先を選択してください。"
     end
-    redirect_to @user
+    redirect_to user_url(date: @first_day)
   end
   
 

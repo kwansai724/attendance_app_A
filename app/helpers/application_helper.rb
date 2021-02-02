@@ -17,4 +17,10 @@ module ApplicationHelper
       format("%.2f", (((overtime_at - end_time) / 60) / 60.0) + 24)
     end
   end
+
+  def superior_name(user)
+    return ['上長B'] if user.name == "上長A"
+    return ['上長A'] if user.name == "上長B"
+    return ['上長A', '上長B'] unless user.name == "上長A" && "上長B"
+  end
 end
