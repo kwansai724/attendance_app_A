@@ -171,6 +171,9 @@
           <td colspan="5"></td>
           <td>
             <h6>所属長承認
+            <% @months.each do |month| %>
+              <%= "#{month.month_superior}" + "#{month_state(month)}" %>
+            <% end %>  
             </h6><br>
             <% if current_user == @user %>
               <%= form_with(model: @user, url: attendances_update_month_apply_user_path(date: @first_day), local: true, method: :patch) do |f| %>

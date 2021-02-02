@@ -36,6 +36,7 @@ before_action :set_one_month, only: [:show]
     @overtime_count = Attendance.where(overtime_status: "申請中", superior_confirmation: @user.name).count
     @change_count = Attendance.where(change_status: "申請中", superior_check: @user.name).count
     @month_count = Attendance.where(month_status: "申請中", month_superior: @user.name).count
+    @months = Attendance.where(user_id: params[:id], worked_on: @first_day)
   end
 
   def edit
