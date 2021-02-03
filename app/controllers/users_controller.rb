@@ -1,3 +1,5 @@
+require 'csv'
+
 class UsersController < ApplicationController
 before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
@@ -37,6 +39,25 @@ before_action :set_one_month, only: [:show]
     @change_count = Attendance.where(change_status: "申請中", superior_check: @user.name).count
     @month_count = Attendance.where(month_status: "申請中", month_superior: @user.name).count
     @months = Attendance.where(user_id: params[:id], worked_on: @first_day)
+
+    respond_to do |format|
+      format.html
+      format.csv do |csv|
+        send_users_csv(@attendances)
+      end
+    end
+  end
+
+  def send_users_csv(attendances)
+    csv_data = CSV.generate(row_sep: "\r\n", encoding:Encoding::CP932)  do |csv|
+      header = %w(日付 出社時間 退社時間 備考)
+      csv << header
+      attendances.each do |attendance|
+        values = [attendance.worked_on, attendance.started_at, attendance.finished_at, attendance.note]
+        csv << values
+      end
+    end
+    send_data(csv_data, filename: "attendances.csv")
   end
 
   def edit
