@@ -137,7 +137,7 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do
       month_approval_params.each do |id, item|
         attendance = Attendance.find(id)
-        if month_approval_params[id][:month_modify] == 'true'
+        unless month_approval_params[id][:month_modify] == 'false'
           attendance.update_attributes!(item)
           if month_approval_params[id][:month_status] == 'なし'
             attendance.update_columns(month_modify: nil, month_status: nil, month_superior: nil, apply_month: nil)
