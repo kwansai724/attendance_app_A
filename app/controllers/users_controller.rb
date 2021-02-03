@@ -5,7 +5,7 @@ before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_inf
 before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :correct_user, only: [:edit, :update]
 before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :working_index]
-before_action :set_one_month, only: [:show]
+before_action :set_one_month, only: [:show, :send_users_csv]
 
   def index
     @users = User.all
@@ -49,11 +49,24 @@ before_action :set_one_month, only: [:show]
   end
 
   def send_users_csv(attendances)
-    csv_data = CSV.generate(row_sep: "\r\n", encoding:Encoding::CP932)  do |csv|
+    csv_data = CSV.generate(row_sep: "\r\n", encoding:Encoding::CP932) do |csv|
       header = %w(日付 出社時間 退社時間 備考)
       csv << header
       attendances.each do |attendance|
-        values = [attendance.worked_on, attendance.started_at, attendance.finished_at, attendance.note]
+        values = [l(attendance.worked_on, format: :short),
+                  if attendance.change_status == '承認'
+                    attendance.change_started_at.strftime('%H:%M') if attendance.change_started_at.present?
+                  else
+                    attendance.started_at.strftime('%H:%M') if attendance.started_at.present?
+                  end,
+                  if attendance.change_status == '承認'
+                    attendance.change_finished_at.strftime('%H:%M') if attendance.change_finished_at.present?
+                  else
+                    attendance.finished_at.strftime('%H:%M') if attendance.finished_at.present?
+                  end,
+                  if attendance.change_status == '承認'
+                    attendance.note
+                  end]
         csv << values
       end
     end
