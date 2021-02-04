@@ -1,9 +1,10 @@
 class AttendancesController < ApplicationController
   before_action :set_user, only: [:edit_one_month, :update_one_month, :edit_overtime_approval, :update_overtime_approval,
-                                  :edit_change_approval, :update_change_approval, :update_month_apply, :edit_month_approval, :update_month_approval]
+                                  :edit_change_approval, :update_change_approval, :update_month_apply, :edit_month_approval,
+                                  :update_month_approval, :show_attendance_log]
   before_action :logged_in_user, only: [:update, :edit_one_month]
   before_action :admin_or_correct_user, only: [:update, :edit_one_month, :update_one_month]
-  before_action :set_one_month, only: [:edit_one_month, :update_month_apply]
+  before_action :set_one_month, only: [:edit_one_month, :update_month_apply, :show_attendance_log]
 
   UPDATE_ERROR_MSG = "勤怠登録に失敗しました。やり直してください。"
 
@@ -103,9 +104,10 @@ class AttendancesController < ApplicationController
       change_approval_params.each do |id, item|
         attendance = Attendance.find(id)
         if change_approval_params[id][:modify] == 'true'
-          attendance.update_attributes!(item)
+          attendance.update_attributes(item.merge(approval_day: Date.today))
           if change_approval_params[id][:change_status] == 'なし'
-            attendance.update_columns(change_started_at: nil, change_finished_at: nil, note: nil, tomorrow: nil, modify: nil, change_status: nil, superior_check: nil)
+            attendance.update_columns(change_started_at: nil, change_finished_at: nil, note: nil, tomorrow: nil, modify: nil,
+                                      change_status: nil, superior_check: nil, approval_day: nil)
           end
         end
       end
@@ -152,6 +154,8 @@ class AttendancesController < ApplicationController
     redirect_to @user
   end
 
+  def show_attendance_log
+  end
   
   private
 

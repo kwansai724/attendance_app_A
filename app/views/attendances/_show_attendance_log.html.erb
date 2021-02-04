@@ -1,0 +1,42 @@
+  <div class="modal-dialog modal-lg modal-dialog-center">
+    <div class="modal-content">
+      <div class="modal-body">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <h3 class="modal-title center">勤怠ログ</h3>
+            <table class="table table-bordered table-condensed table-hover" id="table-attendances">
+              <thead>
+                <tr>
+                  <td>日付</td>
+                  <td>変更前出社時間</td>
+                  <td>変更前退社時間</td>
+                  <td>変更後出社時間</td>
+                  <td>変更後退社時間</td>
+                  <td>指示者</td>
+                  <td>承認日</td>
+                </tr>
+              </thead>
+              <tbody id="body-attendances">
+                <% @attendances.each do |day| %>
+                  <% if day.change_status == '承認' %>
+                    <tr>
+                      <td><%= day.worked_on %></td>
+                      <td><%= day.started_at.strftime('%H:%M') if day.started_at.present? %></td>
+                      <td><%= day.finished_at.strftime('%H:%M') if day.finished_at.present? %></td>
+                      <td><%= day.change_started_at.strftime('%H:%M') if day.change_started_at.present? %></td>
+                      <td><%= day.change_finished_at.strftime('%H:%M') if day.change_finished_at.present? %></td>
+                      <td><%= day.superior_check %></td>
+                      <td><%= day.approval_day %></td>
+                    </tr>
+                  <% end %>  
+                <% end %>
+              </tbody>
+            </table>
+          </div>  
+        </div>
+      </div>
+    </div>  
+  </div>
