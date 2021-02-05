@@ -2,10 +2,11 @@ require 'csv'
 
 class UsersController < ApplicationController
 before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
-before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
+before_action :logged_in_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :correct_user, only: [:edit, :update]
-before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info, :working_index]
+before_action :admin_user, only: [:index, :destroy, :edit_basic_info, :update_basic_info, :working_index]
 before_action :set_one_month, only: [:show, :send_users_csv]
+before_action :general_or_superior_user, only: [:show]
 
   def index
     @users = User.all
