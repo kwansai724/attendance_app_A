@@ -155,6 +155,11 @@ class AttendancesController < ApplicationController
   end
 
   def show_attendance_log
+    if params["year_month(1i)"].present? && params["year_month(2i)"].present?
+      @first_day = Date.parse("#{params["year_month(1i)"]}/#{params["year_month(2i)"]}/1")
+    end
+    @last_day = @first_day.end_of_month
+    @logs = @user.attendances.where(worked_on: @first_day..@last_day).order(:worked_on)
   end
   
   private
