@@ -26,7 +26,7 @@ before_action :general_or_superior_user, only: [:show]
     @user = User.new(user_params)
     if @user.save
       log_in @user
-      remember user
+      remember @user
       flash[:success] = "新規作成に成功しました。"
       redirect_to @user
     else
