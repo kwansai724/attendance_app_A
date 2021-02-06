@@ -16,7 +16,9 @@ gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'roo'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', '1.3.13'
+group :development, :test do
+  gem 'sqlite3', '1.3.13'
+end
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
