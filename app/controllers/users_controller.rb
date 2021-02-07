@@ -4,12 +4,12 @@ class UsersController < ApplicationController
 before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :logged_in_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
 before_action :correct_user, only: [:edit, :update]
-before_action :admin_user, only: [:index, :destroy, :edit_basic_info, :update_basic_info, :working_index]
+before_action :admin_user, only: [:index, :destroy, :edit_basic_info, :update_basic_info, :working_index, :edit_page]
 before_action :set_one_month, only: [:show, :send_users_csv]
 before_action :general_or_superior_user, only: [:show]
 
   def index
-    @users = User.all
+    @users = User.all.order(:id)
   end
 
   def import
@@ -76,6 +76,9 @@ before_action :general_or_superior_user, only: [:show]
 
   def edit
   end
+  
+  def edit_page
+  end
 
   def update
     if @user.update_attributes(user_params)
@@ -112,11 +115,11 @@ before_action :general_or_superior_user, only: [:show]
   private
 
     def user_params
-      params.require(:user).permit(:name, :email, :department, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :affiliation, :password, :password_confirmation)
     end
 
     def basic_info_params
-      params.require(:user).permit(:department, :user_number, :card_id, :basic_time, :work_time)
+      params.require(:user).permit(:affiliation, :employee_number, :uid, :basic_work_time, :work_time)
     end
 
 end
