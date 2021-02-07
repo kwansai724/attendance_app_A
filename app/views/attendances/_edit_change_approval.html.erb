@@ -57,7 +57,7 @@
                       <td><%= day.change_finished_at.strftime('%M') if day.change_finished_at.present? %></td>
                       <td><%= day.note %></td>
                       <td><%= approval.select :change_status, ['申請中', '承認', '否認', 'なし'], {include_blank: false, selected: 1 }, { class: 'form-control' } %></td>
-                      <td><%= approval.check_box :modify, {}, "true", "false" %></td>
+                      <td><%= approval.check_box :modify, { checked: false }, "true", "false" %></td>
                       <td><%= link_to "確認", user_path(user), class: "btn btn-primary" %></td>
                     </tr>
                   </tbody>

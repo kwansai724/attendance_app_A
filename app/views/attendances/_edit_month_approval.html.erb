@@ -25,7 +25,7 @@
                       <tr>
                         <td><%= "#{day.apply_month.mon}月" %></td>
                         <td><%= approval.select :month_status, ['申請中', '承認', '否認', 'なし'], {include_blank: false, selected: 1 }, { class: 'form-control' } %></td>
-                        <td><%= approval.check_box :month_modify, {}, "true", "false" %></td>
+                        <td><%= approval.check_box :month_modify, { checked: false }, "true", "false" %></td>
                         <td><%= link_to "確認", user_path(user_id, date:day.apply_month), class: "btn btn-primary" %></td>
                       </tr>
                     </tbody>
