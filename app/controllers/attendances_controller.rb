@@ -104,8 +104,13 @@ class AttendancesController < ApplicationController
       change_approval_params.each do |id, item|
         attendance = Attendance.find(id)
         if change_approval_params[id][:modify] == 'true'
-          attendance.update_attributes(item.merge(approval_day: Date.today,
-                                       before_started_at: attendance.change_started_at, before_finished_at: attendance.change_finished_at))
+          if attendance.started_at.present? && attendance.finished_at.present?
+            attendance.update_attributes(item.merge(approval_day: Date.today,
+                                          before_started_at: attendance.change_started_at, before_finished_at: attendance.change_finished_at))
+          else
+            attendance.update_attributes(item.merge(approval_day: Date.today,
+                                          started_at: attendance.change_started_at, finished_at: attendance.change_finished_at))
+          end                              
           if change_approval_params[id][:change_status] == 'なし'
             attendance.update_columns(change_started_at: nil, change_finished_at: nil, note: nil, tomorrow: nil, modify: nil,
                                       change_status: nil, superior_check: nil, approval_day: nil)
@@ -170,7 +175,7 @@ class AttendancesController < ApplicationController
     end
 
     def change_approval_params
-      params.require(:user).permit(attendances: [:change_started_at, :change_finished_at, :modify, :change_status])[:attendances]
+      params.require(:user).permit(attendances: [:modify, :change_status])[:attendances]
     end
 
     def admin_or_correct_user
