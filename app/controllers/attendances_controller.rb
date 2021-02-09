@@ -37,7 +37,7 @@ class AttendancesController < ApplicationController
         unless item[:superior_check].blank?
           unless item["change_started_at(4i)"] == "" || item["change_finished_at(4i)"] == "" 
             attendance.update_attributes!(item.merge(change_status: '申請中'))
-            flash[:success] = "1か月分の勤怠情報を申請しました。"
+            flash[:success] = "勤怠の変更を申請しました。"
           else
             flash[:danger] = "出社時間または退社時間が未入力です。"
           end
