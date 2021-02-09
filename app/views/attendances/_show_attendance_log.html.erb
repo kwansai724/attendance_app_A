@@ -32,15 +32,20 @@
                   <% if day.change_status == '承認' %>
                     <tr>
                       <td><%= day.worked_on %></td>
-                      <% if day.started_at.present? %>
-                        <td><%= day.started_at.strftime('%H:%M') %></td>
-                      <% else %>
-                        <td><%= day.before_started_at.strftime('%H:%M') if day.before_started_at.present? %></td>
-                      <% end %> 
-                      <% if day.finished_at.present? %> 
-                        <td><%= day.finished_at.strftime('%H:%M') %></td>
-                      <% else %>
-                        <td><%= day.before_finished_at.strftime('%H:%M') if day.before_finished_at.present? %></td>
+                      <% if day.started_at == day.change_started_at %>
+                        <td></td>
+                        <td></td>
+                      <% else %>  
+                        <% if day.started_at.present? %>
+                          <td><%= day.started_at.strftime('%H:%M') %></td>
+                        <% else %>
+                          <td><%= day.before_started_at.strftime('%H:%M') if day.before_started_at.present? %></td>
+                        <% end %> 
+                        <% if day.finished_at.present? %> 
+                          <td><%= day.finished_at.strftime('%H:%M') %></td>
+                        <% else %>
+                          <td><%= day.before_finished_at.strftime('%H:%M') if day.before_finished_at.present? %></td>
+                        <% end %>
                       <% end %>  
                       <td><%= day.change_started_at.strftime('%H:%M') if day.change_started_at.present? %></td>
                       <td><%= day.change_finished_at.strftime('%H:%M') if day.change_finished_at.present? %></td>
