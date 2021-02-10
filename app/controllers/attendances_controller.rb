@@ -115,7 +115,6 @@ class AttendancesController < ApplicationController
                                             started_at: attendance.change_started_at, finished_at: attendance.change_finished_at))
             end                         
           elsif change_approval_params[id][:change_status] == '否認'
-            debugger
             attendance.update_columns(change_started_at: nil, change_finished_at: nil, note: nil, tomorrow: nil, modify: nil,
                                       change_status: '否認', approval_day: nil)
           elsif change_approval_params[id][:change_status] == 'なし'
