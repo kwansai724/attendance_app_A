@@ -72,7 +72,7 @@ class AttendancesController < ApplicationController
   end
 
   def edit_overtime_approval
-    @attendances = Attendance.where(overtime_status: '申請中', superior_confirmation: @user.name).order(:user_id).group_by(&:user_id)
+    @attendances = Attendance.where(overtime_status: '申請中', superior_confirmation: @user.name).order(:user_id, :worked_on).group_by(&:user_id)
   end
 
 
@@ -82,7 +82,9 @@ class AttendancesController < ApplicationController
         attendance = Attendance.find(id)
         if overtime_approval_params[id][:change] == 'true'
           attendance.update_attributes!(item)
-          if overtime_approval_params[id][:overtime_status] == 'なし'
+          if overtime_approval_params[id][:overtime_status] == '否認'
+            attendance.update_columns(overtime_at: nil, next_day: nil, work_content: nil, change: nil)
+          elsif overtime_approval_params[id][:overtime_status] == 'なし'
             attendance.update_columns(overtime_at: nil, next_day: nil, work_content: nil, superior_confirmation: nil, change: nil, overtime_status: nil)
           end
         end
@@ -96,7 +98,7 @@ class AttendancesController < ApplicationController
   end
 
   def edit_change_approval
-    @attendances = Attendance.where(change_status: '申請中', superior_check: @user.name).order(:user_id).group_by(&:user_id)
+    @attendances = Attendance.where(change_status: '申請中', superior_check: @user.name).order(:user_id, :worked_on).group_by(&:user_id)
   end
 
   def update_change_approval
@@ -104,14 +106,19 @@ class AttendancesController < ApplicationController
       change_approval_params.each do |id, item|
         attendance = Attendance.find(id)
         if change_approval_params[id][:modify] == 'true'
-          if attendance.started_at.present? && attendance.finished_at.present?
-            attendance.update_attributes(item.merge(approval_day: Date.today,
-                                          before_started_at: attendance.change_started_at, before_finished_at: attendance.change_finished_at))
-          else
-            attendance.update_attributes(item.merge(approval_day: Date.today,
-                                          started_at: attendance.change_started_at, finished_at: attendance.change_finished_at))
-          end                              
-          if change_approval_params[id][:change_status] == 'なし'
+          if change_approval_params[id][:change_status] == '承認'
+            if attendance.started_at.present? && attendance.finished_at.present?
+              attendance.update_attributes(item.merge(approval_day: Date.today,
+                                            before_started_at: attendance.change_started_at, before_finished_at: attendance.change_finished_at))
+            else
+              attendance.update_attributes(item.merge(approval_day: Date.today,
+                                            started_at: attendance.change_started_at, finished_at: attendance.change_finished_at))
+            end                         
+          elsif change_approval_params[id][:change_status] == '否認'
+            debugger
+            attendance.update_columns(change_started_at: nil, change_finished_at: nil, note: nil, tomorrow: nil, modify: nil,
+                                      change_status: '否認', approval_day: nil)
+          elsif change_approval_params[id][:change_status] == 'なし'
             attendance.update_columns(change_started_at: nil, change_finished_at: nil, note: nil, tomorrow: nil, modify: nil,
                                       change_status: nil, superior_check: nil, approval_day: nil)
           end
